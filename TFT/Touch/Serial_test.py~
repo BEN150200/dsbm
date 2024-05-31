@@ -1,0 +1,53 @@
+#!/usr/bin/env python
+
+import time as Time
+import pigpio
+#Connections, TFT pin = board pin
+
+""" CS_Pin    =  24 #Poseu els Pins vostres aqui
+Reset_Pin =  11	#Poseu els Pins vostres aqui
+SCLK_Pin  =  23	#Poseu els Pins vostres aqui
+SDO_Pin   =  21	#Poseu els Pins vostres aqui
+SDI_Pin   =  19	#Poseu els Pins vostres aqui
+
+IM1_Pin = 36
+IM2_Pin = 38
+IM3_Pin = 40 """
+
+CS_Pin    =  8 #Poseu els Pins vostres aqui
+Reset_Pin =  17	#Poseu els Pins vostres aqui
+SCLK_Pin  =  11	#Poseu els Pins vostres aqui
+SDO_Pin   =  9	#Poseu els Pins vostres aqui
+SDI_Pin   =  10	#Poseu els Pins vostres aqui
+
+IM1_Pin = 5
+IM2_Pin = 6
+IM3_Pin = 13
+
+#TFT Interface Functions
+
+
+pi = pigpio.pi()
+serial = pi.serial_open("/dev/serial0",9600)
+
+
+
+while True:
+    rdy = pi.serial_data_available(serial)
+   
+     if rdy > 12:
+        byte = pi.serial_read_byte(serial)
+        if byte == 'X':
+            print("X=")
+            while byte != 'Y':
+                byte = pi.serial_read_byte(serial)
+                print(byte)
+            print("\tY=")
+            while byte != ';': 
+                byte = pi.serial_read_byte(serial)
+                print(byte)
+            print('\n')
+     
+
+pi.serial_close(self.serial)
+pi.stop()
